@@ -11,6 +11,7 @@ import (
 func main() {
 
 	var res int
+	var power_sum int
 
 	input, err := os.ReadFile("input.txt")
 	if err != nil {
@@ -28,20 +29,35 @@ func main() {
 			return
 		}
 
-		if check_valid(games) {
+		isValid, cube_nums := check_valid(games)
+
+		if isValid {
 			res += id
+		}
+		if cube_nums != nil {
+			temp := cube_nums["green"] * cube_nums["blue"] * cube_nums["red"]
+			power_sum += temp
 		}
 
 	}
 	fmt.Println(res)
+	fmt.Println(power_sum)
 }
 
-func check_valid(line string) bool {
+func check_valid(line string) (bool, map[string]int) {
+
+	isCorrect := true
 
 	benchmark := map[string]int{
 		"green": 13,
 		"red":   12,
 		"blue":  14,
+	}
+
+	max_cubes := map[string]int{
+		"green": 0,
+		"red":   0,
+		"blue":  0,
 	}
 
 	matches := strings.Split(line, ";") // each match within a game
@@ -59,25 +75,30 @@ func check_valid(line string) bool {
 			value, err := strconv.Atoi(parts[1])
 			if err != nil {
 				fmt.Println(err)
-				return false
+				isCorrect = false
 			}
 
 			color := parts[2]
 
 			if value > benchmark[color] {
 				fmt.Println("Value exceeds benchmark total")
-				return false
+				isCorrect = false
 			}
 			if colorMap[color]+value > benchmark[color] {
 				fmt.Println("Color sum exceeds benchmark with added value")
-				return false
+				isCorrect = false
 			}
+
+			if value > max_cubes[color] {
+				max_cubes[color] = value
+			}
+
 			colorMap[color] += value
 
 		}
 	}
 
-	return true
+	return isCorrect, max_cubes
 }
 
 func sanitizeData(line string) (int, string, error) {
@@ -89,4 +110,8 @@ func sanitizeData(line string) (int, string, error) {
 	}
 
 	return game_number, gameplay, nil
+}
+
+func find_max_cubes() {
+
 }
