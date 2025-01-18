@@ -39,7 +39,6 @@ func main() {
 		}
 
 		res += intermediate
-		fmt.Println(res)
 
 		temp = ""
 
