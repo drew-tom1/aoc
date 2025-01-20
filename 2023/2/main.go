@@ -12,6 +12,7 @@ func main() {
 
 	var res int
 	var power_sum int
+	count := 1
 
 	input, err := os.ReadFile("input.txt")
 	if err != nil {
