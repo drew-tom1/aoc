@@ -20,6 +20,7 @@ func main() {
 	var res int
 	var depth int
 	var pos int
+	var aim int
 
 	for scanner.Scan() {
 		output := strings.Split(scanner.Text(), " ")
@@ -30,13 +31,16 @@ func main() {
 			return
 		}
 
-		switch direction {
+		switch direction { // use AIM for part2, DEPTH for part1 in up/down cases
 		case "forward":
 			pos += value
+			depth += (aim * value)
 		case "up":
 			depth -= value
+			aim -= value
 		case "down":
 			depth += value
+			aim += value
 		}
 	}
 	res = depth * pos
